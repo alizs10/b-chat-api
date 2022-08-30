@@ -39,9 +39,11 @@ Route::prefix('auth')->namespace('Auth')->group(function() {
     // google login
     Route::get('/google', [AuthController::class, "redirectToGoogle"]);
     Route::get('/google/callback', [AuthController::class, "handleGoogleCallback"]);
-
-
+    
+    
     Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    
+    Route::post('/check-username', [AuthController::class, 'checkUsername']);
 });
 
 Route::post('/check-email', [AuthController::class, 'checkEmail']);

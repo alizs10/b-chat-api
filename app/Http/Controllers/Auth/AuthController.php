@@ -25,7 +25,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-      
+
         $credentials = $request->only(['username', 'password']);
         $remember = $request->remember ? $request->remember : false;
         $result = Auth::attempt($credentials, $remember);
@@ -252,5 +252,23 @@ class AuthController extends Controller
     {
         $user = Socialite::driver('google')->stateless()->user();
         return $this->loginOrRegister($user);
+    }
+
+
+    public function checkUsername(Request $request)
+    {
+        $request->validate([
+            'username' => "required|string|min:6|max:25"
+        ]);
+
+        $username = $request->username;
+
+        $same_username = User::where("username", $username)->first();
+        $isAvailable = empty($same_username) ? true : false;
+
+        return response()->json([
+            'available' => $isAvailable,
+            'username' => $username,
+        ], 200);
     }
 }
