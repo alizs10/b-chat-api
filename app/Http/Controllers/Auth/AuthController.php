@@ -33,6 +33,7 @@ class AuthController extends Controller
         if ($result) {
             $token = Auth::user()->createToken('login')->plainTextToken;
             return response([
+                'status' => true,
                 'message' => 'successfully logged in',
                 'user' => Auth::user(),
                 'token' => $token
@@ -40,6 +41,7 @@ class AuthController extends Controller
         }
 
         return response([
+            'status' => false,
             'message' => 'email or password is wrong'
         ], 401);
     }
