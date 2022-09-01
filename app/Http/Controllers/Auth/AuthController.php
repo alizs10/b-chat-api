@@ -96,7 +96,7 @@ class AuthController extends Controller
 
         return response([
             'message' => 'email or verification code is wrong'
-        ], 422);
+        ], 401);
     }
 
 
