@@ -130,7 +130,7 @@ class AuthController extends Controller
     {
         $request->validate(['email' => 'required|email|exists:users,email']);
 
-        $reset_password_token = Str::random(16);
+        $reset_password_token = Str::random(64);
         $user = User::where('email', $request->email)->first();
         $user->update([
             "reset_password_token" => $reset_password_token,
@@ -139,7 +139,7 @@ class AuthController extends Controller
 
 
         //send verification code
-        $result = Mail::to($user->email)->send(new SendResetPasswordToken($user->reset_password_token));
+        $result = Mail::to($user->email)->send(new SendResetPasswordToken($user->email, $user->reset_password_token));
 
         if ($result) {
             return response([
@@ -164,15 +164,13 @@ class AuthController extends Controller
 
         $params = $request->all();
         $user = User::where('email', $params['email'])->first();
-        
+
         //verify token
-        if($params['reset_password_token'] === $user->reset_password_token && $user->reset_password_token_expires_at > Carbon::now())
-        {
+        if ($params['reset_password_token'] === $user->reset_password_token && $user->reset_password_token_expires_at > Carbon::now()) {
             $updatable = [];
 
             // active user if not
-            if(empty($user->email_verified_at))
-            {
+            if (empty($user->email_verified_at)) {
                 $updatable['email_verified_at'] = Carbon::now();
                 $updatable['verification_code'] = null;
             }
@@ -181,7 +179,7 @@ class AuthController extends Controller
             $updatable['password'] = Hash::make($params['password']);
             $updatable['reset_password_token'] = null;
             $user->update($updatable);
-            
+
             return response()->json([
                 'message' => 'password reset successfully',
                 'status' => true

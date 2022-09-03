@@ -11,16 +11,18 @@ class SendResetPasswordToken extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $reset_token;
+    protected $email;
+    protected $reset_password_token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($reset_token)
+    public function __construct($email, $reset_password_token)
     {
-        $this->reset_token = $reset_token;
+        $this->email = $email;
+        $this->reset_password_token = $reset_password_token;
     }
 
     /**
@@ -30,7 +32,8 @@ class SendResetPasswordToken extends Mailable
      */
     public function build()
     {
+        $url = env('APP_BASE_URL') . "/auth/reset-password/$this->email/$this->reset_password_token";
         return $this->view('mails.auth.forgot-password')
-        ->with('reset_password_token', $this->reset_token);
+            ->with('url', $url);
     }
 }
