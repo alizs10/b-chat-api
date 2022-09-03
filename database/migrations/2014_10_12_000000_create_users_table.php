@@ -19,9 +19,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('verification_code')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('reset_password_token')->nullable();
+            $table->timestamp('reset_password_token_expires_at')->nullable();
             $table->string('password');
             $table->string('user_status')->default(0)->comment("0 => offline, 1 => online");
             $table->string('bio')->nullable();
+            $table->text('profile_photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

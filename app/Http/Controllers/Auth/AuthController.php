@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Mail\Auth\SendVerificationCode;
+use App\Mail\SendResetPasswordToken;
 use App\Models\User;
 use App\Services\EmailServices;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -128,21 +130,27 @@ class AuthController extends Controller
     {
         $request->validate(['email' => 'required|email|exists:users,email']);
 
-        $status = FacadesPassword::sendResetLink(
-            $request->only('email')
-        );
+        $reset_password_token = Str::random(16);
+        $user = User::where('email', $request->email)->first();
+        $user->update([
+            "reset_password_token" => $reset_password_token,
+            "reset_password_token_expires_at" => Carbon::now()->addHours(1)
+        ]);
 
 
-        if ($status === FacadesPassword::RESET_LINK_SENT) {
+        //send verification code
+        $result = Mail::to($user->email)->send(new SendResetPasswordToken($user->reset_password_token));
+
+        if ($result) {
             return response([
-                'message' => 'reset password link is sent successfully',
-                'status' => true
+                'status' => true,
+                'message' => 'reset password token sent successfully to ' . $user->email,
             ], 200);
         }
 
         return response([
+            'status' => false,
             'message' => 'something went wrong',
-            'status' => false
         ], 200);
     }
 
