@@ -157,33 +157,39 @@ class AuthController extends Controller
     public function resetPassword(Request $request)
     {
         $request->validate([
-            'token' => 'required',
+            'reset_password_token' => 'required',
             'email' => 'required|email',
             'password' => ['required', 'string', Password::min(8)->mixedCase()->numbers(), 'max:16', 'confirmed']
         ]);
 
-        $status = FacadesPassword::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->forceFill([
-                    'password' => Hash::make($password)
-                ])->setRememberToken(Str::random(60));
+        $params = $request->all();
+        $user = User::where('email', $params['email'])->first();
+        
+        //verify token
+        if($params['reset_password_token'] === $user->reset_password_token && $user->reset_password_token_expires_at > Carbon::now())
+        {
+            $updatable = [];
 
-                $user->save();
-
-                event(new PasswordReset($user));
+            // active user if not
+            if(empty($user->email_verified_at))
+            {
+                $updatable['email_verified_at'] = Carbon::now();
+                $updatable['verification_code'] = null;
             }
-        );
 
-        if ($status === FacadesPassword::PASSWORD_RESET) {
-            return response([
-                'message' => 'password changed successfully',
+            // reset password
+            $updatable['password'] = Hash::make($params['password']);
+            $updatable['reset_password_token'] = null;
+            $user->update($updatable);
+            
+            return response()->json([
+                'message' => 'password reset successfully',
                 'status' => true
-            ], 200);
+            ]);
         }
 
         return response([
-            'message' => 'something went wrong',
+            'message' => 'reset password token is not valid',
             'status' => false
         ], 200);
     }
