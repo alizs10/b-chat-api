@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('conversation_id')->constrained('conversation_id')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('conversation_id')->constrained('conversations')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('messages')->onDelete('cascade')->onUpdate('cascade');
             $table->text('body');
             $table->tinyInteger('seen')->default(0)->comment('0 => not seen, 1 => seen');
