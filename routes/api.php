@@ -3,6 +3,7 @@
 use App\Http\Controllers\App\ConversationController;
 use App\Http\Controllers\App\MessageController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,16 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 // Applications routes
 
 Route::middleware('auth:sanctum')->namespace('App')->group(function () {
+
+    // username
+    Route::get('/username/{username}', function($username) {
+       $username = User::where("username", $username)->first();
+        $usernameExists = empty($username) ? true : false;
+
+        return response()->json([
+            'status' => $usernameExists
+        ]);
+    });
 
     // conversations
     Route::prefix('conversation')->group(function() {
