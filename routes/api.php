@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\App\ConversationController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 // Authentications
-Route::prefix('auth')->namespace('Auth')->group(function() {
-    
+Route::prefix('auth')->namespace('Auth')->group(function () {
+
     //unprotected routes
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
     Route::post('/register', [AuthController::class, 'register']);
@@ -30,14 +31,25 @@ Route::prefix('auth')->namespace('Auth')->group(function() {
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     Route::post('/check-username', [AuthController::class, 'checkUsername']);
-    
+
     // protected routes
-    Route::middleware('auth:sanctum')->group(function() {
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/change-password', [AuthController::class, 'changePassword']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });
-    
+
     // google login
     Route::get('/google', [AuthController::class, "redirectToGoogle"]);
-    Route::get('/google/callback', [AuthController::class, "handleGoogleCallback"]);    
+    Route::get('/google/callback', [AuthController::class, "handleGoogleCallback"]);
+});
+
+
+// Applications routes
+
+Route::middleware('auth:sanctum')->namespace('App')->group(function () {
+
+    Route::prefix('conversation')->group(function() {
+        Route::get('/', [ConversationController::class, 'index']);
+        Route::get('/{conversation}/messages', [ConversationController::class, 'messages']);
+    });
 });
