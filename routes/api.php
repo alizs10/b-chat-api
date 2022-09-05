@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\ConversationController;
+use App\Http\Controllers\App\MessageController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -48,8 +49,16 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 
 Route::middleware('auth:sanctum')->namespace('App')->group(function () {
 
+    // conversations
     Route::prefix('conversation')->group(function() {
         Route::get('/', [ConversationController::class, 'index']);
         Route::get('/{conversation}/messages', [ConversationController::class, 'messages']);
+    });
+
+    // messages
+    Route::prefix('message')->group(function() {
+        Route::get('/store', [MessageController::class, 'store']);
+        Route::post('/update', [MessageController::class, 'update']);
+        Route::get('/destroy', [MessageController::class, 'destroy']);
     });
 });
