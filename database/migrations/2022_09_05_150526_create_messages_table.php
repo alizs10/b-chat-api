@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('messages')->onDelete('cascade')->onUpdate('cascade');
             $table->text('body');
             $table->tinyInteger('seen')->default(0)->comment('0 => not seen, 1 => seen');
+            $table->tinyInteger('status')->default(0);
             $table->tinyInteger('is_edited')->default(0)->comment('0 => not edited, 1 => edited');
             $table->timestamps();
             $table->softDeletes();
