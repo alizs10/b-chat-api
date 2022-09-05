@@ -216,6 +216,7 @@ class AuthController extends Controller
             ], 200);
         }
     }
+    
     public function loginOrRegister($credentials)
     {
         $user = User::where("email", $credentials->email)->first();

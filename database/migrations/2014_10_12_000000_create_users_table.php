@@ -23,6 +23,7 @@ return new class extends Migration
             $table->timestamp('reset_password_token_expires_at')->nullable();
             $table->string('password');
             $table->string('user_status')->default(0)->comment("0 => offline, 1 => online");
+            $table->string('user_type')->default(0)->comment("0 => user, 1 => admin");
             $table->string('bio')->nullable();
             $table->text('profile_photo')->nullable();
             $table->rememberToken();
