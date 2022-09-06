@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\ConversationController;
+use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\MessageController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Models\User;
@@ -50,24 +51,17 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 
 Route::middleware('auth:sanctum')->namespace('App')->group(function () {
 
-    // username
-    Route::get('/username/{username}', function($username) {
-       $username = User::where("username", $username)->first();
-        $usernameExists = empty($username) ? true : false;
-
-        return response()->json([
-            'status' => $usernameExists
-        ]);
-    });
+    // check username
+    Route::get('/check-username/{username}', [HomeController::class, 'checkUsername']);
 
     // conversations
-    Route::prefix('conversation')->group(function() {
+    Route::prefix('conversation')->group(function () {
         Route::get('/', [ConversationController::class, 'index']);
         Route::get('/{conversation}/messages', [ConversationController::class, 'messages']);
     });
 
     // messages
-    Route::prefix('message')->group(function() {
+    Route::prefix('message')->group(function () {
         Route::get('/store', [MessageController::class, 'store']);
         Route::post('/update', [MessageController::class, 'update']);
         Route::get('/destroy', [MessageController::class, 'destroy']);
