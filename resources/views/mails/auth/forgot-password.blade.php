@@ -9,6 +9,6 @@
     <h1>RESET PASSWORD URL: </h1>
     <a href="{{$url}}">reset password</a>
     <br/>
-    <p>This url is validate for 1 hour<p/>
+    <p>This link is valid for 1 hour<p/>
 </body>
 </html>
