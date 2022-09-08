@@ -3,6 +3,7 @@
 use App\Http\Controllers\App\ConversationController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\MessageController;
+use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -50,6 +51,11 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 // Applications routes
 
 Route::middleware('auth:sanctum')->namespace('App')->group(function () {
+
+    // profile
+    Route::prefix('profile')->group(function() {
+        Route::put('/update', [ProfileController::class, 'update']);
+    });
 
     // check username
     Route::get('/check-username/{username}', [HomeController::class, 'checkUsername']);
