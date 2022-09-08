@@ -28,7 +28,7 @@ class ProfileRequest extends FormRequest
             'username' => "nullable|string|min:6|max:25|unique:users,username",
             'email' => "nullable|email|unique:users,email",
             'bio' => 'nullable|string|max:255',
-            'profile_photo' => 'nullable|file|size:2000000|mimes:jpg,jpeg,png,webp',
+            'profile_photo' => 'nullable|file|max:2000|mimes:jpg,jpeg,png,webp',
         ];
     }
 }
