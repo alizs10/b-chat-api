@@ -55,6 +55,7 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
     // profile
     Route::prefix('profile')->group(function() {
         Route::put('/update', [ProfileController::class, 'update']);
+        Route::get('/avatar/destroy', [ProfileController::class, 'deleteAvatar']);
     });
 
     // check username

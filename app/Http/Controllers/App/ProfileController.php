@@ -42,4 +42,20 @@ class ProfileController extends Controller
             'status' => true,
         ]);
     }
+
+    public function deleteAvatar(Request $request, ImageService $imageService)
+    {
+        $user = Auth::user();
+        if(!empty($user->profile_photo)) {
+            $imageService->deleteImage($user->profile_photo);
+            $user->update([
+                'profile_photo' => null
+            ]);
+        }      
+
+        return response()->json([
+            'user' => $user,
+            'status' => true,
+        ]);
+    }
 }
