@@ -265,7 +265,8 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $updatable['verification_code'] = rand(100000, 999999);
-
+        $user->update($updatable);
+        
         //send verification code
         Mail::to($user->email)->send(new SendVerificationCode($user->verification_code));
 
