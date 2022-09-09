@@ -16,7 +16,7 @@ class Conversation extends Model
     protected function withUser(): Attribute
     {
         return Attribute::make(
-            get: fn ()  => $this->users()->where('id', '!=', auth()->user()->id)->select('username', 'profile_photo', 'name')->first(),
+            get: fn ()  => $this->users()->where('id', '!=', auth()->user()->id)->select('username', 'profile_photo', 'name', 'user_status')->first(),
         );
     }
 
