@@ -92,7 +92,7 @@ class AuthController extends Controller
 
             return response([
                 'message' => 'user account activated successfully',
-                'email' => $user->email
+                'user' => $user
             ], 200);
         }
 
