@@ -3,8 +3,9 @@
 namespace App\Http\Requests\App;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class ProfileRequest extends FormRequest
+class ProfileInfoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +24,12 @@ class ProfileRequest extends FormRequest
      */
     public function rules()
     {
+        $user = Auth::user();
+
         return [
-            'name' => 'nullable|string|min:4|max:90',
-            'username' => "nullable|string|min:6|max:25|unique:users,username",
-            'email' => "nullable|email|unique:users,email",
-            'bio' => 'nullable|string|max:255',
-            'profile_photo' => 'nullable|file|max:2000|mimes:jpg,jpeg,png,webp',
+            'name' => 'required|string|min:4|max:90',
+            'username' => "required|string|min:6|max:25|unique:users,username." . $user->username,
+            'email' => "required|email|unique:users,email." . $user->email,
         ];
     }
 }

@@ -53,9 +53,22 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 Route::middleware('auth:sanctum')->namespace('App')->group(function () {
 
     // profile
-    Route::prefix('profile')->group(function() {
-        Route::put('/update', [ProfileController::class, 'update']);
-        Route::get('/avatar/destroy', [ProfileController::class, 'deleteAvatar']);
+    Route::prefix('profile')->group(function () {
+
+        // avatar
+        Route::prefix('avatar')->group(function () {
+            Route::put('update', [ProfileController::class, 'updateAvatar']);
+            Route::get('destroy', [ProfileController::class, 'deleteAvatar']);
+        });
+
+        // bio
+        Route::put('bio/update', [ProfileController::class, 'updateBio']);
+
+        // information
+        Route::put('info/update', [ProfileController::class, 'updateInfo']);
+
+        // delete account
+        Route::put('delete-account', [ProfileController::class, 'deleteAccount']);
     });
 
     // check username
