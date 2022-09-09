@@ -38,6 +38,7 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 
     // protected routes
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/send-verification-code', [AuthController::class, "sendVerificationCode"]);
         Route::post('/change-password', [AuthController::class, 'changePassword']);
         Route::get('/logout', [AuthController::class, 'logout']);
     });

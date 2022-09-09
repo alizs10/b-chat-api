@@ -216,7 +216,7 @@ class AuthController extends Controller
             ], 200);
         }
     }
-    
+
     public function loginOrRegister($credentials)
     {
         $user = User::where("email", $credentials->email)->first();
@@ -259,6 +259,20 @@ class AuthController extends Controller
             $res,
             200
         );
+    }
+
+    public function sendVerificationCode()
+    {
+        $user = Auth::user();
+        $updatable['verification_code'] = rand(100000, 999999);
+
+        //send verification code
+        Mail::to($user->email)->send(new SendVerificationCode($user->verification_code));
+
+        return response([
+            'message' => 'verification code successfully sent to ' . $user->email,
+            'user' => $user
+        ], 200);
     }
 
     public function handleGoogleCallback()
