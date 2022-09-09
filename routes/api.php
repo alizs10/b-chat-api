@@ -53,8 +53,8 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 // Applications routes
 
 Route::middleware('auth:sanctum')->namespace('App')->group(function () {
-
-
+    
+    
     // initial data
     Route::get('/initial', [AppController::class, 'initial']);
 
