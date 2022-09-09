@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controller\App\AppController;
+use App\Http\Controllers\App\AppController;
 use App\Http\Controllers\App\ConversationController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\MessageController;
