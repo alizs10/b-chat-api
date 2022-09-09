@@ -23,7 +23,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('profile_photo')) {
             if (!empty($user->profile_photo)) {
-                $imageService->deleteImage($user->profile_photo);
+                $imageService->deleteImage(public_path(DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . $user->profile_photo));
             }
 
             $imageService->setExclusiveDirectory('user' . DIRECTORY_SEPARATOR . 'avatar');
@@ -53,7 +53,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         if (!empty($user->profile_photo)) {
-            $imageService->deleteImage($user->profile_photo);
+            $imageService->deleteImage(public_path(DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . $user->profile_photo));
             $user->update([
                 'profile_photo' => null
             ]);
@@ -62,6 +62,7 @@ class ProfileController extends Controller
         return response()->json([
             'user' => $user,
             'status' => true,
+            'path' => public_path()
         ]);
     }
 
@@ -117,7 +118,7 @@ class ProfileController extends Controller
                 'status' => false,
             ]);
         }
-        
+
         $user->delete();
 
         return response()->json([

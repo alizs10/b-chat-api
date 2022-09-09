@@ -90,10 +90,8 @@ class ImageService extends ImageToolsService
         return $images;
     }
 
-    public function deleteImage($imagePath)
+    public function deleteImage($path)
     {
-        $path = storage_path('app\public\\' . $imagePath);
-
         if (file_exists($path)) {
 
             unlink($path);
