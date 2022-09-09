@@ -28,8 +28,8 @@ class ProfileInfoRequest extends FormRequest
 
         return [
             'name' => 'required|string|min:4|max:90',
-            'username' => "required|string|min:6|max:25|unique:users,username." . $user->username,
-            'email' => "required|email|unique:users,email." . $user->email,
+            'username' => "required|string|min:6|max:25|unique:users,username," . $user->id,
+            'email' => "required|email|unique:users,email," . $user->id,
         ];
     }
 }

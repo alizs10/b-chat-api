@@ -68,7 +68,7 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
         Route::put('info/update', [ProfileController::class, 'updateInfo']);
 
         // delete account
-        Route::put('delete-account', [ProfileController::class, 'deleteAccount']);
+        Route::post('delete-account', [ProfileController::class, 'deleteAccount']);
     });
 
     // check username
