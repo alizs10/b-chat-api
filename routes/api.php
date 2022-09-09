@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controller\App\AppController;
 use App\Http\Controllers\App\ConversationController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\MessageController;
@@ -52,6 +53,10 @@ Route::prefix('auth')->namespace('Auth')->group(function () {
 // Applications routes
 
 Route::middleware('auth:sanctum')->namespace('App')->group(function () {
+
+
+    // initial data
+    Route::get('/initial', [AppController::class, 'initial']);
 
     // profile
     Route::prefix('profile')->group(function () {
