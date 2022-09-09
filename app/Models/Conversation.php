@@ -11,12 +11,19 @@ class Conversation extends Model
 {
     use HasFactory;
 
-    protected $appends = ['with_user'];
+    protected $appends = ['with_user', 'last_message'];
 
     protected function withUser(): Attribute
     {
         return Attribute::make(
             get: fn ()  => $this->users()->where('id', '!=', auth()->user()->id)->select('username', 'profile_photo', 'name')->first(),
+        );
+    }
+
+    protected function lastMessage(): Attribute
+    {
+        return Attribute::make(
+            get: fn ()  => $this->messages()->latest('created_at')->first(),
         );
     }
 
@@ -27,6 +34,6 @@ class Conversation extends Model
 
     public function messages()
     {
-        $this->hasMany(Message::class);
+        return $this->hasMany(Message::class);
     }
 }
