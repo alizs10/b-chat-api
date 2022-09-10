@@ -14,15 +14,17 @@ class ConversationController extends Controller
         $user = Auth::user();
         $conversations = $user->conversations;
         return response()->json([
+            'status' => true,
             'conversations' => $conversations
         ]);
     }
 
     public function messages(Conversation $conversation)
     {
-        $messages = $conversation->messages;
+        $messages = $conversation->messages()->orderBy('id', 'desc')->get();
         return response()->json([
-            'messages' => $messages
+            'status' => true,
+            'messages' => $messages,
         ]);
     }
 }
