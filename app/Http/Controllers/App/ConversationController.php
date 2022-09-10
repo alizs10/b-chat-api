@@ -21,7 +21,7 @@ class ConversationController extends Controller
 
     public function messages(Conversation $conversation)
     {
-        $messages = $conversation->messages()->orderBy('id', 'desc')->get();
+        $messages = $conversation->messages()->orderBy('id', 'desc')->with('parent')->get();
         return response()->json([
             'status' => true,
             'messages' => $messages,
