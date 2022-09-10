@@ -5,6 +5,7 @@ use App\Http\Controllers\App\ConversationController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\MessageController;
 use App\Http\Controllers\App\ProfileController;
+use App\Http\Controllers\App\UserController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -77,6 +78,12 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
         Route::post('delete-account', [ProfileController::class, 'deleteAccount']);
     });
 
+
+    // user
+    Route::prefix('user')->group(function () {
+        Route::get('/{user}/profile', [UserController::class, 'userProfile']);
+    });
+
     // check username
     Route::get('/check-username/{username}', [HomeController::class, 'checkUsername']);
 
@@ -92,4 +99,5 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
         Route::post('/update', [MessageController::class, 'update']);
         Route::get('/destroy', [MessageController::class, 'destroy']);
     });
+
 });
