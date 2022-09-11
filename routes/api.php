@@ -95,9 +95,9 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
 
     // messages
     Route::prefix('message')->group(function () {
-        Route::get('/store', [MessageController::class, 'store']);
-        Route::post('/update', [MessageController::class, 'update']);
-        Route::get('/destroy', [MessageController::class, 'destroy']);
+        Route::post('/store', [MessageController::class, 'store']);
+        Route::put('/update', [MessageController::class, 'update']);
+        Route::get('/{message}/destroy', [MessageController::class, 'destroy']);
     });
 
 });
