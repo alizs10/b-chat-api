@@ -12,6 +12,7 @@ class MessageController extends Controller
     {
         $inputs = $request->all();
         $message = Message::create($inputs);
+        $message->load('parent');
         return response()->json([
             'message' => $message,
         ]);

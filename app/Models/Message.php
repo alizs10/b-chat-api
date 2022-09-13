@@ -27,7 +27,7 @@ class Message extends Model
     protected function writer(): Attribute
     {
         return Attribute::make(
-            get: fn ()  => $this->user()->select('username', 'profile_photo', 'name', 'user_status')->first(),
+            get: fn ()  => $this->user()->select('id', 'username', 'profile_photo', 'name', 'user_status')->first(),
         );
     }
 
