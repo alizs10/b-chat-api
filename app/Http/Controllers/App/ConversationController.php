@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\Conversation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,35 @@ class ConversationController extends Controller
         return response()->json([
             'status' => true,
             'messages' => $messages,
+        ]);
+    }
+
+    public function checkUsername(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|regex:/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/g|min:6|max:25'
+        ]);
+        $user = Auth::user();
+        $requestedUser = User::where("username", $request->username)
+            ->where("username", '!=', $user->username)
+            ->first();
+        $usernameExists = empty($requestedUser) ? true : false;
+
+        if (!$usernameExists) {
+            if ($user->username === $request->username) {
+                $errorMsg = "can't start a conversation with your self!";
+            } else {
+                $errorMsg = "could'nt find any user";
+            }
+
+            return response()->json([
+                'status' => false,
+                'error' => $errorMsg
+            ]);
+        }
+
+        return response()->json([
+            'status' => $usernameExists
         ]);
     }
 }

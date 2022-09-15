@@ -7,7 +7,6 @@ use App\Http\Controllers\App\MessageController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\UserController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -90,6 +89,7 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
     // conversations
     Route::prefix('conversation')->group(function () {
         Route::get('/', [ConversationController::class, 'index']);
+        Route::get('/new-conversation/check-username', [ConversationController::class, 'checkUsername']);
         Route::get('/{conversation}/messages', [ConversationController::class, 'messages']);
     });
 
