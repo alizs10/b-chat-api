@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Models\Conversation;
 use App\Models\User;
 
 class ConversationService
@@ -23,18 +24,26 @@ class ConversationService
 
     public function create()
     {
+        // returns false if we have invalid usernames or users already have an active conversation 
         $result = $this->verify();
         if (!$result) return  $this->response();
+
+        // create new conversation
+        $newConversation = Conversation::create();
+        $newConversation = $newConversation->users()->attach([$this->users['first_user']->id, $this->users['second_user']->id]);
+        $this->setResponse(true, false, "new conversation created successfully", $newConversation);
+        return $this->response();
     }
 
     private function verify()
     {
+        // check for possible errors in setting users
         if ($this->error) return false;
 
         $first_user = $this->users['first_user'];
         $second_user = $this->users['second_user'];
-
         $first_user_conversations = $first_user->conversations;
+
         //check if they already have an active conversation
         foreach ($first_user_conversations as $conversation) {
             $users = $conversation->users;
