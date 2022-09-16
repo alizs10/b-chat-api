@@ -119,7 +119,15 @@ class ProfileController extends Controller
             ]);
         }
 
-        $user->delete();
+        $user->update([
+            "username" => null,
+            "email" => null,
+            "password" => null,
+            "name" => "Deleted Account",
+            "bio" => null,
+            "profile_photo" => null,
+            "user_status" => 0,
+        ]);
 
         return response()->json([
             'message' => "account deleted successfully",
