@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\ConversationService;
 use App\Models\Conversation;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -32,13 +33,13 @@ class ConversationController extends Controller
     public function checkUsername(Request $request)
     {
         $request->validate([
-            'username' => 'required|string|regex:/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/g|min:6|max:25'
+            'username' => 'required|string|regex:/^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/|min:6|max:25'
         ]);
         $user = Auth::user();
         $requestedUser = User::where("username", $request->username)
-            ->where("username", '!=', $user->username)
-            ->first();
-        $usernameExists = empty($requestedUser) ? true : false;
+        ->where("username", '!=', $user->username)
+        ->first();
+        $usernameExists = empty($requestedUser) ? false : true;
 
         if (!$usernameExists) {
             if ($user->username === $request->username) {
@@ -53,8 +54,12 @@ class ConversationController extends Controller
             ]);
         }
 
+        $conversationService = new ConversationService($user->username, $request->username);
+        $result = $conversationService->create();
+
         return response()->json([
-            'status' => $usernameExists
+            'status' => $usernameExists,
+            'result' => $result
         ]);
     }
 }

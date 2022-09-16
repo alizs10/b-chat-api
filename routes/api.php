@@ -83,13 +83,10 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
         Route::get('/{user}/profile', [UserController::class, 'userProfile']);
     });
 
-    // check username
-    Route::get('/check-username/{username}', [HomeController::class, 'checkUsername']);
-
     // conversations
     Route::prefix('conversation')->group(function () {
         Route::get('/', [ConversationController::class, 'index']);
-        Route::get('/new-conversation/check-username', [ConversationController::class, 'checkUsername']);
+        Route::post('/new/check-username', [ConversationController::class, 'checkUsername']);
         Route::get('/{conversation}/messages', [ConversationController::class, 'messages']);
     });
 
