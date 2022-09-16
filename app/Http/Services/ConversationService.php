@@ -29,9 +29,9 @@ class ConversationService
         if (!$result) return  $this->response();
 
         // create new conversation
-        $newConversation = Conversation::create();
-        $newConversation = $newConversation->users()->attach([$this->users['first_user']->id, $this->users['second_user']->id]);
-        $this->setResponse(true, false, "new conversation created successfully", $newConversation);
+        $new_conversation = Conversation::create();
+        $new_conversation->users()->attach([$this->users['first_user']->id, $this->users['second_user']->id]);
+        $this->setResponse(true, false, "new conversation created successfully", $new_conversation);
         return $this->response();
     }
 
