@@ -81,7 +81,8 @@ Route::middleware('auth:sanctum')->namespace('App')->group(function () {
     // user
     Route::prefix('user')->group(function () {
         Route::get('/{user}/profile', [UserController::class, 'userProfile']);
-        Route::get('/settings', [UserController::class, 'userSettings']);
+        Route::get('/settings', [UserController::class, 'getSettings']);
+        Route::put('/settings', [UserController::class, 'updateSettings']);
     });
 
     // conversations
