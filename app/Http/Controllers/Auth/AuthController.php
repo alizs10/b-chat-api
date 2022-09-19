@@ -59,7 +59,7 @@ class AuthController extends Controller
 
         $newUser = DB::transaction(function () use ($inputs) {
             $newUser = User::create($inputs);
-            $newUser->settings->create();
+            $newUser->settings()->create([]);
 
             //send verification code
             Mail::to($newUser->email)->send(new SendVerificationCode($newUser->verification_code));
