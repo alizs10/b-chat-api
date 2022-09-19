@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Conversation::class)->using(ConversationUser::class);
     }
+
+    public function settings()
+    {
+        return $this->hasOne(Setting::class);
+    }
 }
