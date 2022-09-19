@@ -30,7 +30,7 @@ class UserController extends Controller
     public function updateSettings(SettingsRequest $request)
     {
         $user = Auth::user();
-        $updatable = $request->all();
+        $updatable = $request->except('_method');
         $user->settings()->update($updatable);
         
         return response()->json([
