@@ -30,7 +30,8 @@ class AppController extends Controller
         })->values()->all();
 
         return response()->json([
-            'conversations' => $conversations
+            'conversations' => $conversations,
+            'settings' => $user->settings->only('private_account', 'invite_to_groups', 'always_offline', 'dark_theme')
         ]);
     }
 }

@@ -42,7 +42,8 @@ class ConversationController extends Controller
         ->first();
         $usernameExists = empty($requestedUser) ? false : true;
 
-        if (!$usernameExists) {
+        // check if its an private account
+        if (!$usernameExists || $requestedUser->settings->private_account == 1) {
             if ($user->username === $request->username) {
                 $errorMsg = "can't start a conversation with your self!";
             } else {
@@ -54,6 +55,9 @@ class ConversationController extends Controller
                 'error' => $errorMsg
             ]);
         }
+
+        
+        
 
         $conversationService = new ConversationService($user->username, $request->username);
         $result = $conversationService->create();
