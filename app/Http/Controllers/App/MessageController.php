@@ -13,7 +13,7 @@ class MessageController extends Controller
     {
         $inputs = $request->all();
         $message = Message::create($inputs);
-        $message->load('parent');
+        $message->load('parent', 'conversation');
 
         event(new ChatMessage($message));
 
