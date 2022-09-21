@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Events\Chat\Message as ChatMessage;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -13,6 +14,9 @@ class MessageController extends Controller
         $inputs = $request->all();
         $message = Message::create($inputs);
         $message->load('parent');
+
+        event(new ChatMessage($message));
+        
         return response()->json([
             'message' => $message,
         ]);
