@@ -45,9 +45,4 @@ class Message extends Model
     {
         return $this->belongsTo($this, 'parent_id', 'id');
     }
-
-    public function child()
-    {
-        return $this->hasOne($this, 'parent_id', 'id');
-    }
 }

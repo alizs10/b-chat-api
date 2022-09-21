@@ -16,7 +16,7 @@ class MessageController extends Controller
         $message->load('parent');
 
         event(new ChatMessage($message));
-        
+
         return response()->json([
             'message' => $message,
         ]);
