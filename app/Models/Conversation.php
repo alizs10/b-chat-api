@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Conversation extends Model
 {
@@ -40,9 +41,10 @@ class Conversation extends Model
     public function getUnSeenMessagesAttribute()
     {
         $messages = $this->messages;
+        $user = Auth::user();
         $count = 0;
         foreach ($messages as $message) {
-            if($message->seen == 0)
+            if($message->seen == 0 && $message->user_id != $user->id)
             {
                 $count++;
             }
