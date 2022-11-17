@@ -32,7 +32,8 @@ class Message implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat.' . $this->message->conversatoin->with_user->username);
+        // return new PrivateChannel('chat.' . $this->message->conversation->with_user->username);
+        return ['chat.' . $this->message->conversation->with_user->username];
     }
 
     public function broadcastAs()

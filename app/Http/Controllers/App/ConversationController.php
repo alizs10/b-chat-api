@@ -16,6 +16,7 @@ class ConversationController extends Controller
         $user = Auth::user();
         $conversations = $user->conversations;
         
+        
         return response()->json([
             'status' => true,
             'conversations' => $conversations
