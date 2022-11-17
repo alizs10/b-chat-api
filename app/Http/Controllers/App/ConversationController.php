@@ -26,9 +26,14 @@ class ConversationController extends Controller
     public function messages(Conversation $conversation)
     {
         $messages = $conversation->messages()->orderBy('id', 'desc')->with('parent')->get();
+        foreach($messages as $msg)
+        {
+            $msg->update(['seen' => 1]);
+        }
+
         return response()->json([
             'status' => true,
-            'messages' => $messages,
+            'messages' => $messages
         ]);
     }
 
